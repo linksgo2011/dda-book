@@ -1,7 +1,7 @@
 include_dir=build
 source=chapters/*.md
 title='Domain Driven Architecture Book '
-filename='ebook'
+filename='README'
 
 all: html epub rtf pdf mobi
 
