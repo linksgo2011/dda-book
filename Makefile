@@ -2,12 +2,17 @@ include_dir=build
 source=chapters/*.md
 title='Domain Driven Architecture Book'
 filename=README
+imageHost=https://github.com/domain-driven-design/dda-book/raw/master/
 
 all: html epub rtf pdf mobi
 
+# replace image src, usage:  make chapter=chapter-01-retro chapter
+chapter: 
+	sed 's@](../images@]($(imageHost)images@g' chapters/$(chapter).md > output/$(chapter).md
+
 markdown:
 	awk 'FNR==1{print ""}{print}' $(source) > $(filename).md
-	sed -i "" 's@](../images@](images@g' $(filename).md
+	sed -i "" 's@](../images@]($(imageHost)images@g' $(filename).md
 
 html: markdown
 	pandoc -s $(filename).md -t html5 -o index.html -c style.css \
