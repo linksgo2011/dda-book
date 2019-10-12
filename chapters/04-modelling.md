@@ -24,7 +24,8 @@ EventStorming 工作坊是 Alberto Brandolini 发明，一种用于领域驱动�
 3. 物料准备
 4. 日程安排
 5. DDD 导入培训
-6. 检查准入条件
+6. 人员 DDD 知识摸底
+7. 检查准入条件
 
 **战略设计**
 
