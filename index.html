@@ -11,6 +11,71 @@
       span.underline{text-decoration: underline;}
       div.column{display: inline-block; vertical-align: top; width: 50%;}
   </style>
+  <style>
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
   <link rel="stylesheet" href="style.css" />
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
@@ -21,8 +86,9 @@
 <ul>
 <li><a href="#微服务是怎么被划分出来的">微服务是怎么被划分出来的？</a><ul>
 <li><a href="#微服务划分方法论">微服务划分方法论</a></li>
-<li><a href="#使用-ddd-进行业务架构">使用 DDD 进行业务架构</a></li>
+<li><a href="#使用-ddd-指导架构设计">使用 DDD 指导架构设计</a></li>
 </ul></li>
+<li><a href="#ddd-基础">DDD 基础</a></li>
 <li><a href="#领域建模">领域建模</a><ul>
 <li><a href="#事件风暴工作坊简介">事件风暴工作坊简介</a></li>
 <li><a href="#工作坊准备">工作坊准备</a></li>
@@ -32,11 +98,25 @@
 </ul></li>
 <li><a href="#战术设计">战术设计</a></li>
 </ul></li>
+<li><a href="#微服务系统设计">微服务系统设计</a><ul>
+<li><a href="#api-设计">API 设计</a><ul>
+<li><a href="#api-设计的原则">API 设计的原则</a></li>
+<li><a href="#使用成熟度合适的-restful-api">使用成熟度合适的 RESTful API</a></li>
+<li><a href="#避免简单封装">避免简单封装</a></li>
+<li><a href="#关注点分离">关注点分离</a></li>
+<li><a href="#完全穷尽彼此独立">完全穷尽,彼此独立</a></li>
+<li><a href="#版本化">版本化</a></li>
+<li><a href="#合理命名">合理命名</a></li>
+<li><a href="#安全">安全</a></li>
+</ul></li>
+<li><a href="#api-设计评审清单">API 设计评审清单</a></li>
+</ul></li>
 <li><a href="#简介">简介</a></li>
 <li><a href="#参考资料">参考资料</a></li>
 </ul>
 </nav>
 <h1 id="微服务是怎么被划分出来的">微服务是怎么被划分出来的？</h1>
+<p>垂直划分和水平划分。</p>
 <h2 id="微服务划分方法论">微服务划分方法论</h2>
 <p>微服务发展至今，已经不是一个前沿概念了。越来越多的公司已经在使用或正在准备采用微服务。尤其是这2-3年间，我参与的项目已经没有不是微服务的了。</p>
 <p>同时，微服务已经有非常多成熟的实践，大量开源的微服务框架可以供我们选择，Spring Cloud、Dubbo等框架让我们对微服务的实践难度和成本大大降低。有大量的技术书籍在讨论微服务、分布式架构等技术的具体实现方式，一个公司想要实践微服务已经非常容易了。</p>
@@ -81,11 +161,16 @@
 <p>另外一个方面，技术架构应该是服务于业务架构，而非凌驾于业务架构之上。尽可能的将最优的技术资源花在核心业务逻辑上，优秀的武器应该首先能打中靶子。</p>
 <p>我经历过一个失败的项目。团队致力于开发一个基于云的餐饮管理软件，商户可以非常方便的集中管理连锁餐饮门店</p>
 <p>[TODO]</p>
-<h2 id="使用-ddd-进行业务架构">使用 DDD 进行业务架构</h2>
+<h2 id="使用-ddd-指导架构设计">使用 DDD 指导架构设计</h2>
 <p>微服务时代介绍业务架构方面的资料还非常少。有大量资料讲解如何搭建一套消息中间件，但是很少有资料讲我们需要多少个微服务？微服务架构中，订单和商品一定要两个服务吗？这样划分的依据是什么呢？</p>
 <p>所幸，软件开发领域中技术的发展都是有迹可循的。被合理划分成多个微服务的分布式系统，在逻辑上和解耦良好的单体系统是一致的。大家可能都有这样的体会，因为单体应用某些模块已经被良好的解耦了，在划分成多个服务时显得非常自然。例如一个企业应用中，配置管理往往相对独立，一般作为单独的模块设计。在划分微服务的时候很容易划分处理，但是订单、商品、支付等部分往往依赖关系错综复杂，调用关系千丝万缕，做微服务划分时显得艰难。</p>
 <p>所以，良好的微服务设计，很重要的一部分就是如何对业务的建模和分析，在逻辑上有一个清晰的关系。</p>
 <p>好在十多年前，Eric Evans 提出了“领域驱动设计”，也就是我们常说的 DDD （Domain-Driven Design）。通过 DDD 一系列方法可以从业务出发</p>
+<h1 id="ddd-基础">DDD 基础</h1>
+<p>DDD 通过业务驱动让系统耦合更少，如果耦合变多，以及变复杂了。说明DDD用的不对。</p>
+<p>领域模型的目的是支撑业务场景，如果没有场景，或者想象中的场景，属于过度设计。</p>
+<p>如果场景变化，修改的地方过多，说明抽象不够。</p>
+<p>模型划分方法之一是模型的生命周期不同，寻找聚合根、实体、值对象。</p>
 <h1 id="领域建模">领域建模</h1>
 <h2 id="事件风暴工作坊简介">事件风暴工作坊简介</h2>
 <p>EventStorming 工作坊是 Alberto Brandolini 发明，一种用于领域驱动建模的工作坊形式，中文环境下又被称作为事件风暴工作坊。</p>
@@ -101,6 +186,7 @@
 <li>物料准备</li>
 <li>日程安排</li>
 <li>DDD 导入培训</li>
+<li>人员 DDD 知识摸底</li>
 <li>检查准入条件</li>
 </ol>
 <p><strong>战略设计</strong></p>
@@ -189,6 +275,191 @@
 <p>最后，我们的工作坊应该是迭代式的，这个环节尽可能挖掘所有的事件，但是现实中即使富有经验的领域专家和业务专家，也无法因此穷尽所有的事件。因此我们必须承认我们会在后面的环节对事件进行调整，因此做好一定的准备。</p>
 <h3 id="命令风暴">命令风暴</h3>
 <h2 id="战术设计">战术设计</h2>
+<h1 id="微服务系统设计">微服务系统设计</h1>
+<p>微服务划分的参考原则</p>
+<ul>
+<li>可拆可不拆的，先不拆</li>
+<li>参考限界上下文作为业务边界</li>
+<li>参考弹性边界作为云环境下的伸缩边界</li>
+<li>参考子域划分</li>
+<li>参考领域模型的设计结果，以及依赖情况，和事务边界对齐</li>
+<li>结合未来团队、架构组织方式</li>
+<li>结合 devops 能力</li>
+<li>和变化对其</li>
+</ul>
+<h2 id="api-设计">API 设计</h2>
+<p>API 本身的含义指应用程序接口，包括所依赖的库、平台、操作系统提供的能力都可以叫做 API。我们在讨论微服务场景下的 API 设计都是指 WEB API，一般的实现有 RESTful、RPC等。API 代表了一个微服务实例对外提供的能力，因此 API 的传输格式（XML、JSON）对我们在设计 API 时的影响并不大。</p>
+<p>API 设计时微服务设计中非常重要的环节，代表服务之间交互的方式，会影响服务之间的集成。 通常来说，一个好的 API 设计需要满足两个主要的目的：</p>
+<ul>
+<li><p><strong>平台独立性。</strong> 任何客户端都能消费 API，而不需要关注系统内部实现。API 应该使用标准的协议和消息格式对外部提供服务。传输协议和传输格式不应该侵入到业务逻辑中，也就是系统应该具备随时支持不同传输协议和消息格式的能力。</p></li>
+<li><p><strong>系统可靠性。</strong> 在 API 已经被发布和非 API 版本改变的情况下，API 应该对契约负责，不应该导致数据格式发生破坏性的修改。在 API 需要重大更新时，使用版本升级的方式修改，并对旧版本预留下线时间窗口。</p></li>
+</ul>
+<h3 id="api-设计的原则">API 设计的原则</h3>
+<p>实践中发现，API 设计是一件很难的事情，同时也很难衡量设计是否优秀。根据系统设计和消费者的角度，给出了一些简单的设计原则。</p>
+<h3 id="使用成熟度合适的-restful-api">使用成熟度合适的 RESTful API</h3>
+<p>RESTful 风格的 API 具有一些天然的优势，例如通过 HTTP 协议降低了客户端的耦合，具有极好的开放性。因此越来越多的开发者使用 RESTful 这种风格设计 API，但是 RESTful 只能算是一个设计思想或理念，不是一个 API 规范，没有一些具体的约束条件。</p>
+<p>因此在设计 RESTful 风格的 API 时候，需要参考 RESTful 成熟度模型。</p>
+<table>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 36%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>成熟度等级</th>
+<th>解释</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Level 0</td>
+<td>定义一个根 URI，所有的操作通过 POST 请求完成</td>
+<td><code>POST /?action=changeUserPassword</code></td>
+</tr>
+<tr class="even">
+<td>Level 1</td>
+<td>创建独立的资源地址，隔离 API 范围</td>
+<td><code>POST /user?action=update</code></td>
+</tr>
+<tr class="odd">
+<td>Level 2</td>
+<td>使用 HTTP 动词定义对资源的操作</td>
+<td><code>GET /users/001</code></td>
+</tr>
+<tr class="even">
+<td>Level 3</td>
+<td>使用 API 超媒体（HATEOAS，返回的 body 中索引相关的资源地址 ）</td>
+<td><code>{"links":["/users/","/products/"]}</code></td>
+</tr>
+</tbody>
+</table>
+<p>根据自己的应用场景选择对应的成熟度模型，一般来说系统成熟度模型在 Level 2 左右。</p>
+<h3 id="避免简单封装">避免简单封装</h3>
+<p>API 应该服务业务能力的封装，避免简单封装让 API 彻底变成了数据库操作接口。例如标记订单状态为已支付，应该提供形如 <code>POST /orders/1/pay</code> 这样的API。而非 <code>PATCH /orders/1</code>，然后通过具体的字段更新订单。</p>
+<p>因为订单支付是有具体的业务逻辑，可能涉及到大量复杂的操作，使用简单的更新操作将业务逻辑泄漏到系统之外。同时系统外也需要知道 <code>订单状态</code> 这个内部使用的字段。</p>
+<p>更重要的是，破坏了业务逻辑的封装，同时也会影响其他非功能需求。例如，权限控制、日志记录、通知等。</p>
+<h3 id="关注点分离">关注点分离</h3>
+<p><strong>好的接口应该做到不多东西，不少东西。</strong> 怎么理解呢？在用户修改密码和修改个人资料的场景中，这两个操作看起来很类似，然后设计 API 的时候使用了一个通用的 <code>/users/1/udpate</code> URI。</p>
+<p>然后定义了一个对象，这个对象可能直接使用了 <code>User</code> 这个类：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">{</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;密码&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">}</span></span></code></pre></div>
+<p>这个对象在修改用户名的时候， <code>password</code> 是不必要的，但是在修改密码的操作中，一个 <code>password</code> 字段却不够用了，可能还需要 <code>confirmPassword</code>。</p>
+<p>于是这个接口变成：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">{</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span><span class="st">&quot;密码&quot;</span><span class="fu">,</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="dt">&quot;confirmPassword&quot;</span><span class="fu">:</span><span class="st">&quot;重复密码&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">}</span></span></code></pre></div>
+<p>这种类的复用会给后续维护的开发者带来困惑，同时对消费者也非常不友好。合理的设计应该是两个分离的 API：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="er">//</span> <span class="er">POST</span> <span class="er">/users/</span><span class="fu">{</span><span class="er">userId</span><span class="fu">}</span><span class="er">/password</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">{</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span><span class="st">&quot;密码&quot;</span><span class="fu">,</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="dt">&quot;confirmPassword&quot;</span><span class="fu">:</span><span class="st">&quot;重复密码&quot;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="er">//</span> <span class="er">PATCH</span> <span class="er">/users/</span><span class="fu">{</span><span class="er">userId</span><span class="fu">}</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">{</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span><span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="dt">&quot;xxxx&quot;</span><span class="fu">:</span><span class="st">&quot;其他可更新的字段&quot;</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">}</span></span></code></pre></div>
+<p>对应的实现，在 Java 中需要定义两个 DTO，分别处理不同的接口。这也体现了面向对象思想中的关注点分离。</p>
+<h3 id="完全穷尽彼此独立">完全穷尽,彼此独立</h3>
+<p>API 之间尽量遵守完全穷尽，彼此独立 (MECE) 原则，不应该提供相互叠加的 API。例如订单和订单项这两个资源，如果提供了形如 <code>PUT /orders/1/order-items/1</code> 这样的接口去修改订单项，接口 <code>PUT /orders/1</code> 就不应该具备处理某一个 <code>order-item</code> 的能力。</p>
+<p>这样的好处是不会存在重复的 API，造成维护和理解上的复杂性。如何做到完全穷尽和彼此独立呢？</p>
+<p>简单的方法是使用一个表格设计 API，标出每个 URI 具备的能力。</p>
+<table>
+<thead>
+<tr class="header">
+<th>URI</th>
+<th>业务能力</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>/orders/1</td>
+<td>对订单本身操作</td>
+</tr>
+<tr class="even">
+<td>/orders/1/order-items</td>
+<td>对订单项操作</td>
+</tr>
+</tbody>
+</table>
+<p>资源 URL 设计来源于 DDD 领域建模就非常简单了，聚合根作为根 URL，实体作为二级 URI 设计。聚合根之间应该彻底没有任何联系，实体和聚合根之间的责任应该明确。</p>
+<p>产生这类问题的根源还是缺乏合理的抽象。如果存在 API 中可以通过用户组操作用户，通过用户的 URI 操作用户属于的用户组，这其中的问题是缺少了成员这一概念。用户组下面的本质上并不是用户，而是用户和用户组的关系，即成员。</p>
+<h3 id="版本化">版本化</h3>
+<p>一个对外开放的服务，极大的概率会发生变化。业务变化可能修改 API 参数或响应数据结构，以及资源之间的关系。一般来说，字段的增加不会影响旧的客户端运行。但是当存在一些破坏性修改时，就需要使用新的版本将数据导向到新的资源地址。</p>
+<p>版本信息的传输，可以通过下面几种方式</p>
+<ul>
+<li>URI 前缀</li>
+<li>Header</li>
+<li>Query</li>
+</ul>
+<p>比较推荐的做法是使用 URI 前缀，例如 <code>/v1/users/</code> 表达获取 <code>v1</code> 版本下的用户列表。</p>
+<p>常见的反模式是通过增加 URI 后缀来实现的，例如 <code>/users/1/updateV2</code>。这样做的缺陷是版本信息侵入到业务逻辑中，对路由的统一管理带来不便。</p>
+<p>使用 Header 和 Query 发送版本信息则较为相似，不同之处在于，使用 URI 前缀在 MVC 框架中实现相对简单，只需要定义好路由即可。使用 Header 和 Query 还需要编写额外的拦截器。</p>
+<h3 id="合理命名">合理命名</h3>
+<p>设计 API 时候的命名涉及多个地方：URI、请求参数、响应数据等。通常来说最主要，也是最难的一个是全局命名统一。</p>
+<p>其次，命名需要注意这些：</p>
+<ul>
+<li>尽可能和领域名词保持一致，例如聚合根、实体、事件等</li>
+<li>RESTful 设计的 URI 中使用名词复数</li>
+<li>尽可能不要过度简写，例如将 <code>user</code> 简写成 <code>usr</code></li>
+<li>尽可能使用不需要编码的字符</li>
+</ul>
+<p>用领域名词来对 API 设计命名不是一件特别难的事情。识别出的领域名词可以直接作为 URI 来使用。如果存在多个单词的连接可以使用中横线，例如 <code>/orders/1/order-items</code></p>
+<h3 id="安全">安全</h3>
+<p>安全是任何一项软件设计都必须要考虑的事情，对于 API 设计来说，暴露给内部系统的 API 和开放给外部系统的 API 略有不同。</p>
+<p>内部系统，更多的是考虑是否足够健壮。对接收的数据有足够的验证，并给出错误信息，而不是什么信息都接收，然后内部业务逻辑应该边界值的影响变得莫名其妙。</p>
+<p>而对于外部系统的 API 则有更多的挑战。</p>
+<ul>
+<li>错误的调用方式</li>
+<li>接口滥用</li>
+<li>浏览器消费 API 时因安全漏洞导致的非法访问</li>
+</ul>
+<p>所以设计 API 时应该考虑响应的应对措施。针对错误的调用方式，API 不应该进入业务处理流程，及时给出错误信息；对于接口滥用的情况，需要做一些限速的方案；对于一些浏览器消费者的问题，可以在让 API 返回一些安全增强头部，例如：X-XSS-Protection、Content-Security-Policy 等。</p>
+<h2 id="api-设计评审清单">API 设计评审清单</h2>
+<ul>
+<li>URI 命名是否通过聚合根和实体统一</li>
+<li>URI 命名是否采用名词复数和连接线</li>
+<li>URI 命名是否都是单词小写</li>
+<li>URI 是否暴露了不必要的信息，例如 <code>/cgi-bin</code></li>
+<li>URI 规则是否统一</li>
+<li>资源提供的能力是否彼此独立</li>
+<li>URI 是否存在需要编码的字符</li>
+<li>请求和返回的参数是否不多不少</li>
+<li>资源的 ID 参数是否通过 PATH 参数传递</li>
+<li>认证和授权信息是否暴露到 query 参数中</li>
+<li>参数是否使用奇怪的缩写</li>
+<li>参数和响应数据中的字段命名统一</li>
+<li>是否存在无意义的对象包装 例如 <code>{"data":{}'}</code></li>
+<li>出错时是否破坏约定的数据结构</li>
+<li>是否使用合适的状态码</li>
+<li>是否使用合适的媒体类型</li>
+<li>响应数据的单复是否和数据内容一致</li>
+<li>响应头中是否有缓存信息</li>
+<li>是否进行了版本管理</li>
+<li>版本信息是否作为 URI 的前缀存在</li>
+<li>是否提供 API 服务期限</li>
+<li>是否提供了 API 返回所有 API 的索引</li>
+<li>是否进行了认证和授权</li>
+<li>是否采用 HTTPS</li>
+<li>是否检查了非法参数</li>
+<li>是否增加安全性的头部</li>
+<li>是否有限流策略</li>
+<li>是否支持 CORS</li>
+<li>响应中的时间格式是否采用 <code>ISO 8601</code> 标准</li>
+<li>是否存在越权访问</li>
+</ul>
 <h1 id="简介">简介</h1>
 <p>Domain Driven Architecture book</p>
 <p>TODO: 中文名</p>
@@ -201,6 +472,11 @@
 <ul>
 <li>https://xebia.com/blog/eventstorming-continuous-discovery-beyond-software-modelling/ EventStorming; Continuous discovery beyond software modelling</li>
 <li>https://www.jdon.com/50847 EventStorming 超越软件建模的持续发现</li>
+<li>https://herbertograca.com/2017/09/28/clean-architecture-standing-on-the-shoulders-of-giants/ Clean Architecture: Standing on the shoulders of giants</li>
+<li>https://www.jianshu.com/p/b565f0c00c0c 整洁架构(译)</li>
+<li>https://www.jianshu.com/p/eadbec49fbbc?from=timeline&amp;isappinstalled=0 插图版：领域驱动的微服务架构设计工作坊实施步骤</li>
+<li>https://developer.github.com/v3/#current-version</li>
+<li>https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design</li>
 </ul>
 </body>
 </html>
