@@ -1,6 +1,8 @@
 参考资料
 === 
-
+- https://www.infoq.cn/article/microservices-intro
+- https://microservices.io/
+https://www.nginx.com/blog/introduction-to-microservices/
 - https://xebia.com/blog/eventstorming-continuous-discovery-beyond-software-modelling/ EventStorming; Continuous discovery beyond software modelling
 - https://www.jdon.com/50847 EventStorming 超越软件建模的持续发现
 - https://herbertograca.com/2017/09/28/clean-architecture-standing-on-the-shoulders-of-giants/ Clean Architecture: Standing on the shoulders of giants
@@ -8,3 +10,4 @@
 - https://www.jianshu.com/p/eadbec49fbbc?from=timeline&isappinstalled=0 插图版：领域驱动的微服务架构设计工作坊实施步骤
 - https://developer.github.com/v3/#current-version 
 - https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design
+
