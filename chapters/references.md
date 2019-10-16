@@ -1,5 +1,6 @@
 参考资料
 === 
+- https://www.ibm.com/developerworks/cn/java/j-cn-java-and-microservice-1st/index.html 微服务
 - https://www.infoq.cn/article/microservices-intro
 - https://microservices.io/
 https://www.nginx.com/blog/introduction-to-microservices/
