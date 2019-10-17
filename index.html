@@ -187,9 +187,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Z 轴拓展实际上非常常见，例如电信运营商基于地域对用户进行划分，北京和上海的用户使用不同的号码段进行管理。微服务出现之前，我们对系统的拓展更多的关注于 X 拓展，负载均衡、读写分离都是为了解决如何进行服务复制来承载更多的请求。SOA 应用进行了一部分的 Y 轴拓展，但是 SOA 和微服务的本质不同在于，SOA 拆分的不是独立的服务，而是组件，SOA 组件必须注册到企业总线或者其他机制中才能对外提供整体的服务。</p>
 <p>一个典型的区别在于，SOA 往往将业务逻辑拆分成不同的 SOA 服务，但是数据依然是集中的。业界对微服务的共识在于数据应该被划分到各个微服务中，每个微服务可以独立演进、独立发布甚至独立运营，提供完整的服务能力，并通过松耦合的方式集成。这也是企业实现中台的基本能力。</p>
 <p>一个典型的 SOA 架构像这样，又不同的服务，但是服务是作为系统的一部分组件存在的，在 Java EE 的生态下作为一个部署到容器中的 war 包存在的。 这些服务共用基础设施，尤其是数据库。</p>
-<p>!(SOA)[./images/SOA.png]</p>
+<figure>
+<img src="./images/SOA.png" alt="" /><figcaption>SOA</figcaption>
+</figure>
 <p>而对比之下，微服务架构下，每个服务有自己的数据库，并且自己单独部署，提供 RESTful API 供其他服务。应用后者其他服务调用微服务时和调用第三方系统并没有两样。</p>
-<p>!(micro-service)[./images/micro-service.png]</p>
+<figure>
+<img src="./images/micro-service.png" alt="" /><figcaption>micro-service</figcaption>
+</figure>
 <p>参考下面的韦恩图，让我们对微服务架构的理解更进一步。</p>
 <figure>
 <img src="./images/microservcie-veen.png" alt="" /><figcaption>veen</figcaption>
@@ -198,7 +202,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>水平划分就够了，完全不需要垂直划分，那就不需要微服务。</p>
 <p>前面我们谈到，主流微服务形态是各个微服务彼此独立，内部的实现不可见，能独立的提供服务。回到我们的需要解决的问题上，微服务的基础是建立在 AKF 的 Y 轴拓展上的。</p>
 <figure>
-<img src="./images/microservcie-akf.png" alt="" /><figcaption>veen</figcaption>
+<img src="./images/microservcie-akf.png" alt="" /><figcaption>akf</figcaption>
 </figure>
 <p>SOA 已经解决了微服务架构同样会遇到的 X 轴拓展和 Z 轴拓展，这些技术已经非常成熟：负载均衡、分库分表等。使用微服务其中一个原因就是 Y 轴拓展。实现 Y 轴的基础是服务解耦，并且随着解耦，给我们带了其他好处。</p>
 <p><strong>应用复杂性的隔离</strong>。分解巨大单体应用为多个微服务，降低了单体应用的复杂性问题。每个应用只需要关注自己的 API 内提供的能力即可，这样每个微服务比单体应用开发难度大大降低。在应用的复杂性上来讲，一加一大于二，所以架构师的工作需要把两个一隔离开，让大多数开发者在低复杂度的状态下开发。</p>
@@ -213,6 +217,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>调用链跟踪</li>
 <li>日志</li>
 <li>分布式事务</li>
+<li>调试</li>
+<li>测试</li>
 </ul>
 <h3 id="微服务的准入清单">微服务的准入清单</h3>
 <p>在几年的实践中，被强行采用微服务的项目坑过的不少，有过同样体验的朋友不在少数。当服务内的业务逻辑非常单薄时，开发过程中的大部分工作都在处理服务间调用，尤其是服务内聚不够时，让这种情况雪上加霜。</p>
