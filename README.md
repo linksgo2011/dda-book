@@ -86,7 +86,7 @@ Z 轴拓展实际上非常常见，例如电信运营商基于地域对用户进
 
 参考下面的韦恩图，让我们对微服务架构的理解更进一步。
 
-![veen](./images/mciroservcie-veen.png)
+![veen](./images/microservcie-veen.png)
 
 ## 为什么我们需要微服务?
 
