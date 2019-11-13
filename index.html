@@ -104,14 +104,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#指导-api-设计">指导 API 设计</a></li>
 <li><a href="#指导对象设计">指导对象设计</a></li>
 <li><a href="#指导代码组织">指导代码组织</a></li>
-<li><a href="#指导权限设计">指导权限设计</a></li>
 </ul></li>
-<li><a href="#聚焦核心域">聚焦核心域</a></li>
-<li><a href="#ddd-的局限性">DDD 的局限性</a></li>
-<li><a href="#ddd-概念汇总">DDD 概念汇总</a></li>
-<li><a href="#参考资料">参考资料</a></li>
 </ul></li>
-<li><a href="#领域建模">领域建模</a><ul>
+<li><a href="#领域建模工作坊">领域建模工作坊</a><ul>
 <li><a href="#事件风暴工作坊简介">事件风暴工作坊简介</a></li>
 <li><a href="#工作坊准备">工作坊准备</a></li>
 <li><a href="#战略设计">战略设计</a><ul>
@@ -140,7 +135,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#某物联网平台提供商">某物联网平台提供商</a></li>
 </ul></li>
 <li><a href="#简介">简介</a></li>
-<li><a href="#参考资料-1">参考资料</a></li>
+<li><a href="#参考资料">参考资料</a></li>
 </ul>
 </nav>
 <h1 id="微服务是怎么被划分出来的">微服务是怎么被划分出来的？</h1>
@@ -529,35 +524,65 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>不要设计为:</p>
 <pre><code>POST /orders/{orderId}/items/batch</code></pre>
 <h3 id="指导对象设计">指导对象设计</h3>
+<p>在实践中过程中，像 Java、Typescript具有类型系统的语言，对象很容易被误用。如果 <code>User</code> 对象既被拿来当做数据库操作使用，又被拿来当做接口呈现使用，这个类最终变成了上帝类，存在大量可有可无的属性。</p>
+<p>例如用户注册时候需要输入重复密码，如果在 <code>User</code> 对象中添加 <code>confirmPassword</code> 属性，存储时候确并不需要。</p>
+<p>因此 DDD 中，数据库各种对象的使用应该针对不同的场景设计。回到我们上面说的技术复杂度和业务复杂度中来。领域模型解决业务复杂度的问题，领域模型只应该被用作处理业务逻辑，存储、业务表现都应该和领域模型无关。</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/objects-design.png" alt="" /><figcaption>对象设计</figcaption>
+</figure>
+<p>简单来说，可以把这些 <code>Plain Object</code> 分为三类:</p>
+<ul>
+<li>DTO，和交互相关或者和后端、第三方服务对接</li>
+<li>Entity，数据库表映射</li>
+<li>Model，领域模型</li>
+</ul>
+<p>另外，在使用领域模型使用上也需要额外注意</p>
+<ul>
+<li>领域对象尽量使用组合的方式，而不是继承，现实业务逻辑中继承这种概念实际上很少。例如菜品的设计，有热菜、汤菜、凉菜，实际上这里面并不是菜的继承，而应该抽象出分类这个模型。</li>
+<li>不要滥用领域模型，有些业务逻辑，实在找不出一个领域模型很正常，所以 DDD 中存在一个领域服务。例如，生成一个 UUID。有些业务逻辑不持有系统业务状态，Eric 的书中比喻为像加油站一样的业务逻辑。</li>
+</ul>
 <h3 id="指导代码组织">指导代码组织</h3>
+<p>代码组织，通俗来说就是如何分包。一种狭义的对 DDD 的理解就是指按照 DDD 风格进行代码组织，虽然 DDD 的内容远不止于此。</p>
+<p>在很长一段时间，我对 DDD 分包策略陷入困惑，后来我明白到，讨论 DDD 风格的分包，必须将单体引用和微服务应用分开考虑。</p>
+<blockquote>
+<p>微服务应用在逻辑上和解耦良好的单体应用是一致的。</p>
+</blockquote>
+<p>但是微服务是一种分布式架构，映射到单体应用中，各个包分布到不同的服务器中了。我们先以单体应用入手，最后再讨论如何将单体应用架构映射到到微服务中。</p>
+<p>在事务脚本的模式中，我们一般将代码分为三层架构。DDD 特别的抽离出一层叫做 <code>application</code>。这一层是 DDD 的精华，领域模型关心业务逻辑，但是不关心业务场景。</p>
+<p><code>application</code> 用来隔离业务场景，显得非常重要。举个例子，用户被添加到系统中，领域模型处理的是：</p>
+<ol type="1">
+<li>用户被添加</li>
+<li>授予基本权限</li>
+<li>积分规则创建</li>
+<li>账户创建（三户模型，客户、用户、账户往往分开）</li>
+<li>客户资料录入</li>
+</ol>
+<p>但是，用户被添加到系统中由多个应用场景触发。</p>
+<ul>
+<li>用户被邀请注册</li>
+<li>用户自己注册</li>
+<li>管理员添加用户</li>
+</ul>
+<p><code>application</code> 需要隔离应用场景，并组织调配领域服务，才能使得领域服务真正被复用。因此 <code>application</code> 需要承担事务管理、权限控制、数据校验和转换等操作。当领域服务被调用时，应该是纯粹业务逻辑，并与场景无关。</p>
+<p>如果我们将三层架构和 DDD 架构对比，DDD 架构如右图所示。</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/ddd-vs.png" alt="" /><figcaption>三层架构对比</figcaption>
+</figure>
+<p>我们将 DDD 的代码架构展开，可以看到更为细节的内容。 DDD 代码实现上需要 <code>Repository</code>、<code>Factory</code> 等概念，但这些是可选的，我们在后面具体讲代码结构的部分再阐述。</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/ddd-mono.png" alt="" /><figcaption>单体DDD架构</figcaption>
+</figure>
+<p>我们再来看，DDD 的单体应用架构映射到微服务架构下会是怎么样的。</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/mono-micro-service.png" alt="" /><figcaption>单体到微服务</figcaption>
+</figure>
+<p>微服务必须考虑到不再是一种服务器，<code>Domain</code> 层被抽离出来作为 <code>Domain Server</code> 存在，<code>Domain Server</code> 不关心业务场景，因此不需要 <code>application</code> 层。<code>Application Server</code> 需要 <code>Application</code> 层，<code>Domain</code> 层由后端的 <code>Domain Server</code> 提供。</p>
+<p>另外补充，一些 DDD 代码组织的基本逻辑：</p>
 <ul>
 <li>隔离业务复杂度和技术复杂度</li>
-<li>单体应用的代码组织</li>
-<li>微服务的代码组织</li>
+<li>使用接口隔离有必要的耦合和依赖倒置</li>
 </ul>
-<h3 id="指导权限设计">指导权限设计</h3>
-<ul>
-<li>在设计权限时怎么定义一个功能点？DDD 可以解决这个问题，application 上每一个方法都是一个 UseCase 那么，每一个方法可以作为一个权限控制点，再集合 RBAC 即可设计出合理的权限。</li>
-</ul>
-<h2 id="聚焦核心域">聚焦核心域</h2>
-<h2 id="ddd-的局限性">DDD 的局限性</h2>
-<ul>
-<li>DDD 可操作性不够</li>
-<li>DDD 不适用于技术复杂度的项目</li>
-</ul>
-<h2 id="ddd-概念汇总">DDD 概念汇总</h2>
-<h2 id="参考资料">参考资料</h2>
-<p>DDD 通过业务驱动让系统耦合更少，如果耦合变多，以及变复杂了。说明DDD用的不对。</p>
-<p>领域模型的目的是支撑业务场景，如果没有场景，或者想象中的场景，属于过度设计。</p>
-<p>如果场景变化，修改的地方过多，说明抽象不够。</p>
-<p>模型划分方法之一是模型的生命周期不同，寻找聚合根、实体、值对象。</p>
-<ul>
-<li>并不是真正的面向对象。例如订单，往往是 OrderService 操作数据库对象 Order，这里的 Order 往往只是数据库呈现的 Plain Object，没有业务逻辑。OrderServer 只是执行数据库命令的方法集合。</li>
-<li>没有对行为充分复用，即使通过 service 有一些方法是重用的，但带来的是关注点不分离。例如，在系统中用户被创建有两种操作，注册、管理员添加用户。那么如果复用代码就会造成有一些参数会和特定场景有关，但对于其他场景是多余的。</li>
-</ul>
-<p>当然，领域驱动设计具体细节还有很多，下面介绍领域以及领域模型相关的内容。</p>
-<p>领域模型中，不应该存在多对多关系。</p>
-<h1 id="领域建模">领域建模</h1>
+<h1 id="领域建模工作坊">领域建模工作坊</h1>
 <h2 id="事件风暴工作坊简介">事件风暴工作坊简介</h2>
 <p>EventStorming 工作坊是 Alberto Brandolini 发明，一种用于领域驱动建模的工作坊形式，中文环境下又被称作为事件风暴工作坊。</p>
 <p>工作坊的英文名称是 Workshop 通俗来说就是找一波人在一个大屋子里开会，进行研讨活动。和培训不同的是，工作坊一般没有讲师，也没有固定的内容。工作坊一般会有一个主持人，有些环境下又被称为催化师，负责工作坊的流程和推动，但内容是所有参与者共同完成的。</p>
@@ -859,7 +884,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>文档构建基于 Pandoc</li>
 <li>文档样式来源 <a href="https://phodal.github.io/mifa">https://phodal.github.io/mifa</a></li>
 </ul>
-<h1 id="参考资料-1">参考资料</h1>
+<h1 id="参考资料">参考资料</h1>
 <ul>
 <li>https://www.ibm.com/developerworks/cn/java/j-cn-java-and-microservice-1st/index.html 微服务</li>
 <li>https://www.infoq.cn/article/microservices-intro</li>
