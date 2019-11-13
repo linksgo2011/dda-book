@@ -99,7 +99,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#分析领域模型时请把电断掉">分析领域模型时，请把”电“断掉</a></li>
 <li><a href="#上下文二义性统一语言">上下文、二义性、统一语言</a></li>
 <li><a href="#聚合根实体值对象">聚合根、实体、值对象</a></li>
-<li><a href="#section"></a></li>
 <li><a href="#使用领域模型指导程序设计">使用领域模型指导程序设计</a><ul>
 <li><a href="#指导数据库设计">指导数据库设计</a></li>
 <li><a href="#指导-api-设计">指导 API 设计</a></li>
@@ -107,7 +106,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="#指导代码组织">指导代码组织</a></li>
 <li><a href="#指导权限设计">指导权限设计</a></li>
 </ul></li>
+<li><a href="#聚焦核心域">聚焦核心域</a></li>
 <li><a href="#ddd-的局限性">DDD 的局限性</a></li>
+<li><a href="#ddd-概念汇总">DDD 概念汇总</a></li>
 <li><a href="#参考资料">参考资料</a></li>
 </ul></li>
 <li><a href="#领域建模">领域建模</a><ul>
@@ -350,7 +351,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>我从这里面学到了什么呢？</p>
 <p>我们做的计算机系统实际上，是替代了现实世界中的一些操作。按照面向对象设计的话，我们的系统是一个电子餐厅。现实餐厅中的实体，应该对应到我们的系统中去，用于承载业务，例如收银员、顾客、厨师、餐桌、菜品，这些虚拟的实体表达了系统的状态，在某种程度上就能指代系统，这就是模型，如果找到了这些元素，就很容易设计出软件。</p>
 <p>后来，如果我什么业务逻辑想不清楚，我就会把电断掉，假装自己是服务员，用纸和笔走一边业务流程。</p>
-<p>分析业务，设计对象，编写代码。这就是领域驱动设计的基本过程。</p>
+<p>分析业务，设计领域模型，编写代码。这就是领域驱动设计的基本过程。随后会介绍，如何设计领域模型，当我们建立了领域模型后，会讲解如何使用领域模型指导开发工作。</p>
+<ul>
+<li>指导数据库设计</li>
+<li>指导模块分包和代码设计</li>
+<li>指导 RESTful API 设计</li>
+<li>指导事务策略</li>
+<li>指导权限</li>
+<li>指导微服务划分（有必要的情况）</li>
+</ul>
 <figure>
 <img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/ddd-process.png" alt="" /><figcaption>领域驱动设计过程</figcaption>
 </figure>
@@ -367,7 +376,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <figure>
 <img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/isolation.png" alt="" /><figcaption>技术复杂度和业务复杂度</figcaption>
 </figure>
-<p><strong>技术复杂度，软件设计中和技术实现相关的问题，例如处理用户输入，持久化模型，，处理网络通信等。</strong></p>
+<p><strong>技术复杂度，软件设计中和技术实现相关的问题，例如处理用户输入，持久化模型，处理网络通信等。</strong></p>
 <p><strong>业务复杂度，软件设计中和业务逻辑相关的问题，例如为订单添加商品，需要计算订单总价，应用折扣规则等。</strong></p>
 <p>当我们分析业务并建模时，不要关注技术实现，会带来极大的干扰。我学到最实用的思维方法，就是在这个过程把”电“断掉，技术复杂度中的用户交互想象成人工交谈，持久化想象成用纸和笔记录。</p>
 <p>DDD 还强调，业务建模应该充分的和业务专家在一起，不应该只是实现软件的工程师自嗨。业务专家是一个虚拟的角色，有可能是一线业务人员、项目经理、或者软件工程师。</p>
@@ -375,7 +384,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>这个建模过程可以是技术人员和业务专家一起讨论出来，也可以是使用 ”事件风暴“ 这类工作坊的方式完成。</p>
 <p>这个过程非常重要，DDD 把这个过程称作 <strong>协作设计</strong>。</p>
 <p>通过这个过程，我们得到了领域模型。</p>
-<p>[领域模型v1]]](https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/ddd-v1.png)</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/ddd-v1.png" alt="" /><figcaption>领域模型v1</figcaption>
+</figure>
 <p>上图使我们通过业务分析得到的一个非常基本的领域模型，我们的点餐系统中，会有座位、订单、菜品、评价几个模型。一个座位可以由多个订单，每个订单可以有多个菜品和评价。</p>
 <p>同时，菜品也会被不同的订单使用。</p>
 <h2 id="上下文二义性统一语言">上下文、二义性、统一语言</h2>
@@ -415,25 +426,109 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </figure>
 <p>使用上下文之后，带来另外一个收获。模型之间本质上没有多对多关系，如果有，说明存在一个隐含的成员关系，这个关系没有被充分的分析出来，对后期的开发会造成非常大的困扰。</p>
 <h2 id="聚合根实体值对象">聚合根、实体、值对象</h2>
-<p>CER 图</p>
-<p>聚合：不求同年同月同日生，但求同年同月同日死。</p>
-<h2 id="section"></h2>
-<h2 id="使用领域模型指导程序设计">使用领域模型指导程序设计</h2>
-<h3 id="指导数据库设计">指导数据库设计</h3>
+<p>上面的模型，尤其是解决二义性这个问题之后，已经能在实际开发中很好地使用了。不过还是会有一些问题没有解决，实际开发中，每种模型的身份可能不太一样，订单项必须依赖订单的存在而存在，如果能在领域模型图中体现出来就更好了。</p>
+<p>举个例子来说，当我们删除订单时候，订单项应该一起删除，订单项的存在必须依赖于订单的存在。这样业务逻辑是一致的和完整的，游离的订单项对我们来说没有意义，除非有特殊的业务需求存在。</p>
+<p>为了解决这个问题，对待模型就不再是一视同仁了。我们将那相关性极强的领域模型放到一起考虑，数据的一致性必须解决，同时生命周期也需要保持同步，我们把这个集合叫做<strong>聚合</strong>。</p>
+<p>聚合中需要选择一个代表负责和全局通信，类似于一个部门的接口人，这样就能确保数据保持一致。我们把这个模型叫做<strong>聚合根</strong>。当一个聚合业务足够简单时，聚合有可能只有一个模型组成，这个模型就是聚合根，常见的就是配置、日志相关的。</p>
+<p>相对于非聚合根的模型，我们叫做<strong>实体</strong>。</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/ddd-v5.png" alt="" /><figcaption>DDD-v5</figcaption>
+</figure>
+<p>我们把这个图完善一下，聚合之间也是用虚线链接，为聚合根标上橙色。识别聚合根需要一些技巧。</p>
 <ul>
-<li>表结构设计</li>
-<li>ORM 的正确使用</li>
-<li>ACID和BASE</li>
+<li>聚合根本质上也是实体，同属于领域模型，用于承载业务逻辑和系统状态。</li>
+<li>实体的生命周期依附于聚合根，聚合根删除实体应该也需要被删除，保持系统一致性，避免游离的脏数据。</li>
+<li>聚合根负责和其他聚合通信，因此聚合根往往具有一个全局唯一标识。例如，订单有订单 ID 和订单号，订单号为全局业务标识，订单 ID 为聚合内关联使用。聚合外使用订单号进行关联应用。</li>
+</ul>
+<p>还有一类特殊的模型，这类模型只负责承载多个值的用处。在我们饭店的例子中，如果需要对账单支持多国货币，我们将纯数字的 <code>price</code> 字段修为 <code>Price</code> 类型。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">public</span> clsss <span class="fu">Price</span>(){</span>
+<span id="cb1-3"><a href="#cb1-3"></a>    <span class="kw">private</span> <span class="bu">String</span> unit;</span>
+<span id="cb1-4"><a href="#cb1-4"></a>    <span class="kw">private</span> <span class="bu">BigDecimal</span> value;    </span>
+<span id="cb1-5"><a href="#cb1-5"></a>    </span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="kw">public</span> <span class="fu">Price</span>(<span class="bu">String</span> unit,<span class="bu">BigDecimal</span> value){</span>
+<span id="cb1-7"><a href="#cb1-7"></a>        <span class="kw">this</span>.<span class="fu">unit</span> = unit;</span>
+<span id="cb1-8"><a href="#cb1-8"></a>        <span class="kw">this</span>.<span class="fu">value</span> = value;</span>
+<span id="cb1-9"><a href="#cb1-9"></a>    }</span>
+<span id="cb1-10"><a href="#cb1-10"></a>}</span></code></pre></div>
+<p>价格这个模型，没有自己的生命周期，一旦被创建出来就无须修改，因为修改就改变了这个值本身。所以我们会给这类的对象一个构造方法，然后去除掉所有的 <code>setter</code> 方法。</p>
+<p>我们把没有自己生命周期的模型，仅用来呈现多个字段的值的模型和对象，称作为<strong>值对象</strong>。</p>
+<p>值对象一开始不是特备好理解，但是理解之后会让系统设计非常清晰。”地址“是一个显著的值对象。当订单发货后，地址中的某一个属性不应该被单独修改，因为被修改之后这个”地址“就不再是刚刚那个”地址“，判断地址是否相同我们会使用它的具体值：省、市、地、街道等。</p>
+<p>值对象是相对于实体而言的，对比如下。</p>
+<table>
+<thead>
+<tr class="header">
+<th>实体</th>
+<th>值对象</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>有 ID 标识</td>
+<td>无 ID 标识</td>
+</tr>
+<tr class="even">
+<td>有自己的生命周期</td>
+<td>一经创建就不要修改</td>
+</tr>
+<tr class="odd">
+<td>可以对实体进行管理</td>
+<td>使用新的值对象替换</td>
+</tr>
+<tr class="even">
+<td>使用 ID 进行相等性比较</td>
+<td>使用属性进行相等性比较</td>
+</tr>
+</tbody>
+</table>
+<p>另外值得一提的是，一个模型被作为值对象还是实体看待不是一成不变的，某些情况下需要作为实体设计，但是在另外的条件下却最好作为值对象设计。</p>
+<p>地址，在一个大型系统充满了二义性。</p>
+<ul>
+<li>作为订单中的收货地址时，无需进行管理，只需要表达街道、门牌号等信息，应该作为值对象设计。为了避免歧义，可以重新命名为收货地址。</li>
+<li>作为系统地理位置信息管理的情况中具有自己的生命周期，应该作为实体设计，并重命名为系统地址。</li>
+<li>作为用户添加的自定义地址，用户可以根据 ID 进行管理，应该作为实体，并重命名为用户地址。</li>
+</ul>
+<p>我们使用蓝色区别实体和聚合根，更新后的模型图如下：</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/ddd-v6.png" alt="" /><figcaption>ddd-v6</figcaption>
+</figure>
+<p>虽然我们使用 E-R 的方式描述模型和模型之间的关系，但是这个 E-R 图使用了颜色、虚线，已经和传统的 E-R 图大不相同，把这种图暂时叫做 <strong>CE-R</strong> 图（Classified Entity Relationship）。DDD 没有规定如何画图，你可以使用其他任何画图的方法表达领域模型。</p>
+<h2 id="使用领域模型指导程序设计">使用领域模型指导程序设计</h2>
+<p>在了解到 DDD 之前，到底该用一对多和多对多关系？RESTful API 设计时到底应该选哪一个对象作为资源地址，评价应该放到订单路径下还是单独出来？订单删除相关有多少对象应该纳入事务管理？</p>
+<p>在没有领域模型之前，这些大概率凭借经验决定，当我们把领域模型设计出来之后，领域模型可以帮助我们做出这些指导。领域模型不只是为编写业务逻辑代码使用，这样对领域模型来说就太可惜了。</p>
+<p>下面是领域模型指导软件开发的一些方面，具体细节后面会再逐个讨论。</p>
+<h3 id="指导数据库设计">指导数据库设计</h3>
+<p>通过 CE-R 图，我们明显可以设计出数据库了。不过还有一些细节需要注意。</p>
+<p>首先，在之前的认知里面，多对多关系是非常正常的。但是通过对领域模型的分析后发现，传统处理多对多关系时，需要额外增加一张关联表，这张关联表本质上是一个”关系“的实体没有被发掘出来。否则，在实际开发中会造成系统耦合，以及使用 ORM 的时候产生困惑。</p>
+<p>菜品和订单之间是多对多关系吗？</p>
+<p>如果是，菜品和订单之间耦合了。实际上，菜品的管理处于系统操作的上游，菜品不依赖订单的任何操作，也就是说订单的任何变化菜品无需关心。</p>
+<p>订单拥有多个订单项，每个订单项从菜品读入数据并拷贝，或者引用一个菜品的全局 ID （菜品在另外一个聚合）。这样在设计表结构时订单和订单项关联，订单项不关联菜品。订单项应该从程序读取菜品信息。看起来多对多的关系，被细致分析后，变成了一个一对多关系。</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/database-design.png" alt="" /><figcaption>数据库设计</figcaption>
+</figure>
+<p>在使用 ORM 时，良好的领域模型尤其有用。不合适的关联关系不仅让 ORM 关联变得混乱，还会让 ORM 的性能变差。</p>
+<p>使用领域模型建立数据库的要点：</p>
+<ul>
+<li>留意多对多关系，并拆解成一对多关系</li>
+<li>将外键放到实体上</li>
+<li>值对象和实体为一对一关系，值对象中保存实体的主键即可，无需为值对象分配 id</li>
+<li>使用 ORM 时，聚合根和实体可以配置为级联删除和更新</li>
 </ul>
 <h3 id="指导-api-设计">指导 API 设计</h3>
-<ul>
-<li>更自然的 Restful API</li>
-<li>只需要两层 PATH</li>
-</ul>
+<p>RESTful API 已经变成了主流 API 设计方式，当设计好领域对象后，设计 API 的难度大大降低。</p>
+<p>使用聚合根作为 URI 的根路径，使用实体作为子路径。通过 ID 作为 Path 参数。</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/api-design.png" alt="" /><figcaption>API 设计</figcaption>
+</figure>
+<p>值对象没有 ID，应该只能依附于某个实体的路径下做更新操作。</p>
+<figure>
+<img src="https://github.com/linksgo2011/dda-book/raw/master/images/02-DDD-foundamental/api-design-v2.png" alt="" /><figcaption>API 设计 v2</figcaption>
+</figure>
+<p>另外根据这个关系，处理批量操作的时候应该在实体的上一级完成，例如批量添加订单的订单项，可以设计为：</p>
+<pre><code>POST /orders/{orderId}/items-batch</code></pre>
+<p>不要设计为:</p>
+<pre><code>POST /orders/{orderId}/items/batch</code></pre>
 <h3 id="指导对象设计">指导对象设计</h3>
-<ul>
-<li>组合、继承、</li>
-</ul>
 <h3 id="指导代码组织">指导代码组织</h3>
 <ul>
 <li>隔离业务复杂度和技术复杂度</li>
@@ -444,15 +539,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>在设计权限时怎么定义一个功能点？DDD 可以解决这个问题，application 上每一个方法都是一个 UseCase 那么，每一个方法可以作为一个权限控制点，再集合 RBAC 即可设计出合理的权限。</li>
 </ul>
+<h2 id="聚焦核心域">聚焦核心域</h2>
 <h2 id="ddd-的局限性">DDD 的局限性</h2>
 <ul>
 <li>DDD 可操作性不够</li>
 <li>DDD 不适用于技术复杂度的项目</li>
 </ul>
+<h2 id="ddd-概念汇总">DDD 概念汇总</h2>
 <h2 id="参考资料">参考资料</h2>
-<ul>
-<li></li>
-</ul>
 <p>DDD 通过业务驱动让系统耦合更少，如果耦合变多，以及变复杂了。说明DDD用的不对。</p>
 <p>领域模型的目的是支撑业务场景，如果没有场景，或者想象中的场景，属于过度设计。</p>
 <p>如果场景变化，修改的地方过多，说明抽象不够。</p>
@@ -635,34 +729,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 id="关注点分离">关注点分离</h3>
 <p><strong>好的接口应该做到不多东西，不少东西。</strong> 怎么理解呢？在用户修改密码和修改个人资料的场景中，这两个操作看起来很类似，然后设计 API 的时候使用了一个通用的 <code>/users/1/udpate</code> URI。</p>
 <p>然后定义了一个对象，这个对象可能直接使用了 <code>User</code> 这个类：</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1"></a></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">{</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;密码&quot;</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">{</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span> <span class="st">&quot;密码&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="fu">}</span></span></code></pre></div>
 <p>这个对象在修改用户名的时候， <code>password</code> 是不必要的，但是在修改密码的操作中，一个 <code>password</code> 字段却不够用了，可能还需要 <code>confirmPassword</code>。</p>
 <p>于是这个接口变成：</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1"></a></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">{</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span><span class="st">&quot;密码&quot;</span><span class="fu">,</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="dt">&quot;confirmPassword&quot;</span><span class="fu">:</span><span class="st">&quot;重复密码&quot;</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">{</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span> <span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span><span class="st">&quot;密码&quot;</span><span class="fu">,</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="dt">&quot;confirmPassword&quot;</span><span class="fu">:</span><span class="st">&quot;重复密码&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">}</span></span></code></pre></div>
 <p>这种类的复用会给后续维护的开发者带来困惑，同时对消费者也非常不友好。合理的设计应该是两个分离的 API：</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1"></a></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="er">//</span> <span class="er">POST</span> <span class="er">/users/</span><span class="fu">{</span><span class="er">userId</span><span class="fu">}</span><span class="er">/password</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">{</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span><span class="st">&quot;密码&quot;</span><span class="fu">,</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>  <span class="dt">&quot;confirmPassword&quot;</span><span class="fu">:</span><span class="st">&quot;重复密码&quot;</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="fu">}</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1"></a></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="er">//</span> <span class="er">PATCH</span> <span class="er">/users/</span><span class="fu">{</span><span class="er">userId</span><span class="fu">}</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">{</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span><span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>  <span class="dt">&quot;xxxx&quot;</span><span class="fu">:</span><span class="st">&quot;其他可更新的字段&quot;</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="er">//</span> <span class="er">POST</span> <span class="er">/users/</span><span class="fu">{</span><span class="er">userId</span><span class="fu">}</span><span class="er">/password</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">{</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="dt">&quot;password&quot;</span><span class="fu">:</span><span class="st">&quot;密码&quot;</span><span class="fu">,</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>  <span class="dt">&quot;confirmPassword&quot;</span><span class="fu">:</span><span class="st">&quot;重复密码&quot;</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="er">//</span> <span class="er">PATCH</span> <span class="er">/users/</span><span class="fu">{</span><span class="er">userId</span><span class="fu">}</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="fu">{</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>  <span class="dt">&quot;username&quot;</span><span class="fu">:</span><span class="st">&quot;用户名&quot;</span><span class="fu">,</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>  <span class="dt">&quot;xxxx&quot;</span><span class="fu">:</span><span class="st">&quot;其他可更新的字段&quot;</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="fu">}</span></span></code></pre></div>
 <p>对应的实现，在 Java 中需要定义两个 DTO，分别处理不同的接口。这也体现了面向对象思想中的关注点分离。</p>
 <h3 id="完全穷尽彼此独立">完全穷尽,彼此独立</h3>
 <p>API 之间尽量遵守完全穷尽，彼此独立 (MECE) 原则，不应该提供相互叠加的 API。例如订单和订单项这两个资源，如果提供了形如 <code>PUT /orders/1/order-items/1</code> 这样的接口去修改订单项，接口 <code>PUT /orders/1</code> 就不应该具备处理某一个 <code>order-item</code> 的能力。</p>
