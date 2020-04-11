@@ -53,7 +53,7 @@
 
 ## 什么是微服务？
 
-根据维基百科的定义，微服务是一种 SOA 的变体，特征是服务之间通过松耦合的方式集成。一般采用轻量级的传输协议（Http），以及不要求服务内采用同样的技术栈实现，通过暴露统一的 WEB API 实现相互通信。
+根据维基百科的定义，微服务是一种 SOA 的变体，特征是服务之间通过松耦合的方式集成。一般采用轻量级的传输协议（HTTP），以及不要求服务内采用同样的技术栈实现，通过暴露统一的 WEB API 实现相互通信。
 
 业界对微服务的共识是：
 
@@ -70,7 +70,7 @@
 
 这个立方体中沿着三个坐标轴设置分别为：X、Y、Z。
 
-![AKF&#x62D3;&#x5C55;&#x7ACB;&#x65B9;](https://github.com/linksgo2011/dda-book/tree/ae848ad2c2cb95bc7ba5d3905bd64fbf8627c841/chapters/images/akf.png)
+![AKF&#x62D3;&#x5C55;&#x7ACB;&#x65B9;](./01-distributed system/akf.png)
 
 * X 轴扩展 —— 无差别的水平的数据和服务复制，具体的实践可以对应为加机器
 * Y 轴扩展 —— 根据应用中职责的划分，具体的实践为对各个业务线剥离
@@ -82,15 +82,15 @@ Z 轴拓展实际上非常常见，例如电信运营商基于地域对用户进
 
 一个典型的 SOA 架构像这样，又不同的服务，但是服务是作为系统的一部分组件存在的，在 Java EE 的生态下作为一个部署到容器中的 war 包存在的。 这些服务共用基础设施，尤其是数据库。
 
-![&#x4E00;&#x4EFD;&#x7B80;&#x5355;&#x7684; SOA &#x67B6;&#x6784;&#x56FE;](https://github.com/linksgo2011/dda-book/tree/ae848ad2c2cb95bc7ba5d3905bd64fbf8627c841/chapters/images/SOA.png)
+![&#x4E00;&#x4EFD;&#x7B80;&#x5355;&#x7684; SOA &#x67B6;&#x6784;&#x56FE;](./01-distributed system/SOA.png)
 
 而对比之下，微服务架构下，每个服务有自己的数据库，并且自己单独部署，提供 RESTful API 供其他服务。应用后者其他服务调用微服务时和调用第三方系统并没有两样。
 
-![&#x4E00;&#x4EFD;&#x7B80;&#x5355;&#x7684;&#x5FAE;&#x670D;&#x52A1;&#x67B6;&#x6784;&#x56FE;](https://github.com/linksgo2011/dda-book/tree/ae848ad2c2cb95bc7ba5d3905bd64fbf8627c841/chapters/images/micro-service.png)
+![&#x4E00;&#x4EFD;&#x7B80;&#x5355;&#x7684;&#x5FAE;&#x670D;&#x52A1;&#x67B6;&#x6784;&#x56FE;](./01-distributed system/micro-service.png)
 
 参考下面的韦恩图，让我们对微服务架构的理解更进一步。
 
-![&#x5206;&#x5E03;&#x5F0F;&#x67B6;&#x6784;&#x3001;SOA&#x67B6;&#x6784;&#x3001;&#x5FAE;&#x670D;&#x52A1;&#x67B6;&#x6784;&#x7684;&#x5173;&#x7CFB;](https://github.com/linksgo2011/dda-book/tree/ae848ad2c2cb95bc7ba5d3905bd64fbf8627c841/chapters/images/microservcie-veen.png)
+![&#x5206;&#x5E03;&#x5F0F;&#x67B6;&#x6784;&#x3001;SOA&#x67B6;&#x6784;&#x3001;&#x5FAE;&#x670D;&#x52A1;&#x67B6;&#x6784;&#x7684;&#x5173;&#x7CFB;](./01-distributed system/microservcie-veen.png)
 
 ## 为什么我们需要微服务?
 
@@ -98,7 +98,7 @@ Z 轴拓展实际上非常常见，例如电信运营商基于地域对用户进
 
 前面我们谈到，主流微服务形态是各个微服务彼此独立，内部的实现不可见，能独立的提供服务。回到我们的需要解决的问题上，微服务的基础是建立在 AKF 的 Y 轴拓展上的。
 
-![&#x5FAE;&#x670D;&#x52A1;&#x5728; AKF &#x62D3;&#x5C55;&#x7ACB;&#x65B9;&#x4E2D;&#x7684;&#x4F5C;&#x7528;](https://github.com/linksgo2011/dda-book/tree/ae848ad2c2cb95bc7ba5d3905bd64fbf8627c841/chapters/images/akf-example.png)
+![&#x5FAE;&#x670D;&#x52A1;&#x5728; AKF &#x62D3;&#x5C55;&#x7ACB;&#x65B9;&#x4E2D;&#x7684;&#x4F5C;&#x7528;](./01-distributed system/akf-example.png)
 
 SOA 已经解决了微服务架构同样会遇到的 X 轴拓展和 Z 轴拓展，这些技术已经非常成熟：负载均衡、分库分表等。使用微服务其中一个原因就是 Y 轴拓展。实现 Y 轴的基础是服务解耦，并且随着解耦，给我们带了其他好处。
 
