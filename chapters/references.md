@@ -22,3 +22,7 @@
 
 * [https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design](https://docs.microsoft.com/en-us/azure/architecture/best-practices/api-design)
 
+* 软件危机 [https://baike.baidu.com/item/%E8%BD%AF%E4%BB%B6%E5%8D%B1%E6%9C%BA](https://baike.baidu.com/item/软件危机)
+
+  
+
